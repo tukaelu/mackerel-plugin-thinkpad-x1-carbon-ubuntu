@@ -2,6 +2,7 @@ package mpthinkpad
 
 import (
 	"bufio"
+	"flag"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -200,6 +201,13 @@ func atof(s string) (float64, error) {
 	return strconv.ParseFloat(s, 64)
 }
 
+// Do the plugin
 func Do() {
+	optPrefix := flag.String("metric-key-prefix", "", "Metric key prefix")
+	flag.Parse()
 
+	p := mp.NewMackerelPlugin(&ThinkpadX1CarbonPlugin{
+		Prefix: *optPrefix,
+	})
+	p.Run()
 }
