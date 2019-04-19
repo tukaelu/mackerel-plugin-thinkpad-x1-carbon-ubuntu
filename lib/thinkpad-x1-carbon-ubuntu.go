@@ -29,7 +29,7 @@ type ThinkpadX1CarbonPlugin struct {
 }
 
 // GraphDefinition impl mackerel plugin interface
-func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string](mp.Graphs) {
+func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
 	graphdef["battery.BAT0.capacity"] = mp.Graphs{
 		Label: "Battery Capacity",
 		Unit:  "percentage",
