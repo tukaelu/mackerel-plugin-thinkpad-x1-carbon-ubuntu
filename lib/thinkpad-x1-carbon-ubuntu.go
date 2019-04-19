@@ -2,6 +2,7 @@ package mpthinkpad
 
 import (
 	"bufio"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
@@ -11,12 +12,19 @@ import (
 
 const (
 	pathBattery = "/sys/class/power_supply/BAT0/uevent"
+
+	pathCPU   = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
+	pathCore0 = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp2_input"
+	pathCore1 = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp3_input"
+	pathCore2 = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp4_input"
+	pathCore3 = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp5_input"
 )
 
 var graphdef = map[string]mp.Graphs{}
 
 // ThinkpadX1CarbonLinuxPlugin plugin struct
 type ThinkpadX1CarbonLinuxPlugin struct {
+	Prefix string
 }
 
 // GraphDefinition impl mackerel plugin interface
@@ -72,6 +80,10 @@ func (p *ThinkpadX1CarbonLinuxPlugin) FetchMetrics() (map[string]interface{}, er
 		return nil, err
 	}
 
+	if err = collectCPUTemp(&m); err != nil {
+		return nil, err
+	}
+
 	return m, nil
 }
 
@@ -122,8 +134,70 @@ func collectBattery(m *map[string]interface{}) error {
 	return nil
 }
 
+func collectCPUTemp(m *map[string]interface{}) error {
+	var v float64
+	var err error
+
+	v, err = parseCPUTemp(pathCPU)
+	if err != nil {
+		return err
+	}
+	(*m)["cpu"] = v
+
+	v, err = parseCPUTemp(pathCore0)
+	if err != nil {
+		return err
+	}
+	(*m)["core0"] = v
+
+	v, err = parseCPUTemp(pathCore1)
+	if err != nil {
+		return err
+	}
+	(*m)["core1"] = v
+
+	v, err = parseCPUTemp(pathCore2)
+	if err != nil {
+		return err
+	}
+	(*m)["core2"] = v
+
+	v, err = parseCPUTemp(pathCore3)
+	if err != nil {
+		return err
+	}
+	(*m)["core3"] = v
+
+	return nil
+}
+
+func parseCPUTemp(statFile string) (float64, error) {
+	str, err := parseStatFile(statFile)
+	if err != nil {
+		return 0, err
+	}
+
+	v, err := atof(str)
+	if err != nil {
+		return 0, err
+	}
+	return v / 1000, nil
+}
+
+func parseStatFile(statFile string) (string, error) {
+	str, err := ioutil.ReadFile(statFile)
+	if err != nil {
+		return "", err
+	}
+	return strings.Trim(strings.Trim(string(str), "\n"), " "), nil
+}
+
 func atoi(s string) (int64, error) {
-	return strconv.ParseInt(strings.Trim(s, " "), 10, 64)
+	return strconv.ParseInt(s, 10, 64)
+}
+
+func atof(s string) (float64, error) {
+	return strconv.ParseFloat(s, 64)
 }
 
 func Do() {
