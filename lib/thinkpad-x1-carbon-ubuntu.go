@@ -1,0 +1,5 @@
+package mpthinkpad
+
+func Do() {
+
+}
