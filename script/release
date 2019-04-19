@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+GITHUB_USER=tukaelu
+GITHUB_REPO=mackerel-plugin-thinkpad-x1-carbon-ubuntu
+
+latest_tag=$(git describe --abbrev=0 --tags)
+goxz -d dist/$latest_tag -z -os linux -arch amd64
+ghr -u $GITHUB_USER -r $GITHUB_REPO $latest_tag dist/$latest_tag
