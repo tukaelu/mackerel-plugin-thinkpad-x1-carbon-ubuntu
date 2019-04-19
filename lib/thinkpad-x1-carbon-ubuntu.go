@@ -22,13 +22,13 @@ const (
 
 var graphdef = map[string]mp.Graphs{}
 
-// ThinkpadX1CarbonLinuxPlugin plugin struct
-type ThinkpadX1CarbonLinuxPlugin struct {
+// ThinkpadX1CarbonPlugin plugin struct
+type ThinkpadX1CarbonPlugin struct {
 	Prefix string
 }
 
 // GraphDefinition impl mackerel plugin interface
-func (p *ThinkpadX1CarbonLinuxPlugin) GraphDefinition() map[string](mp.Graphs) {
+func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string](mp.Graphs) {
 	graphdef["battery.BAT0.capacity"] = mp.Graphs{
 		Label: "Battery Capacity",
 		Unit:  "percentage",
@@ -71,7 +71,7 @@ func (p *ThinkpadX1CarbonLinuxPlugin) GraphDefinition() map[string](mp.Graphs) {
 }
 
 // FetchMetrics impl mackerel plugin interface
-func (p *ThinkpadX1CarbonLinuxPlugin) FetchMetrics() (map[string]interface{}, error) {
+func (p *ThinkpadX1CarbonPlugin) FetchMetrics() (map[string]interface{}, error) {
 	var err error
 
 	m := make(map[string]interface{})
