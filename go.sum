@@ -12,8 +12,8 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/pty v1.1.4/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/mackerelio/go-mackerel-plugin-helper v0.0.0-20190128100302-f151d2503465 h1:8EfKJP9T6OETJPZ4iydotZumupYrUlYUVPxVSzAtx4A=
-github.com/mackerelio/go-mackerel-plugin-helper v0.0.0-20190128100302-f151d2503465/go.mod h1:WpdCkhyiE10ceGU+G48rMjI0Vz4ug2bqiOQRtuBuBOM=
+github.com/mackerelio/go-mackerel-plugin v0.0.0-20190128100243-d8f0ff0871b9 h1:6G6SRidl9FJ1MNSp9ANXl3t8iNkPs36yCEg5OxcaPBA=
+github.com/mackerelio/go-mackerel-plugin v0.0.0-20190128100243-d8f0ff0871b9/go.mod h1:cnhQn7nt6mOZKBya/EA/Bn0RxHDrKJv1XdXoUbiKl2I=
 github.com/mackerelio/golib v0.0.0-20190411032134-c87047ca454e h1:MwWzFCq2tENDy2YPU01FDOSkt0At4mpLyvAFsFdB66A=
 github.com/mackerelio/golib v0.0.0-20190411032134-c87047ca454e/go.mod h1:kbqYA8VcFqcMt07v+GPSZQwqtwc7Wr0V0vzxUNMrk7E=
 github.com/mattn/go-colorable v0.1.1/go.mod h1:FuOcm+DKB9mbwrcAfNl7/TZVBZ6rcnceauSikq3lYCQ=

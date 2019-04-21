@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	mp "github.com/mackerelio/go-mackerel-plugin-helper"
+	mp "github.com/mackerelio/go-mackerel-plugin"
 )
 
 const (
@@ -72,16 +72,15 @@ func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
 }
 
 // FetchMetrics impl mackerel plugin interface
-func (p *ThinkpadX1CarbonPlugin) FetchMetrics() (map[string]interface{}, error) {
-	var err error
+func (p *ThinkpadX1CarbonPlugin) FetchMetrics() (map[string]float64, error) {
 
-	m := make(map[string]interface{})
+	m := make(map[string]float64)
 
-	if err = collectBattery(&m); err != nil {
+	if err := collectBattery(&m); err != nil {
 		return nil, err
 	}
 
-	if err = collectCPUTemp(&m); err != nil {
+	if err := collectCPUTemp(&m); err != nil {
 		return nil, err
 	}
 
@@ -96,7 +95,7 @@ func (p *ThinkpadX1CarbonPlugin) MetricKeyPrefix() string {
 	return p.Prefix
 }
 
-func collectBattery(m *map[string]interface{}) error {
+func collectBattery(m *map[string]float64) error {
 	file, err := os.Open(pathBattery)
 	if err != nil {
 		return err
@@ -109,31 +108,31 @@ func collectBattery(m *map[string]interface{}) error {
 
 		switch slice[0:1][0] {
 		case "POWER_SUPPLY_CAPACITY":
-			v, err := atoi(string(slice[1:2][0]))
+			v, err := atof(string(slice[1:2][0]))
 			if err != nil {
 				return err
 			}
 			(*m)["capacity"] = v
 		case "POWER_SUPPLY_CYCLE_COUNT":
-			v, err := atoi(string(slice[1:2][0]))
+			v, err := atof(string(slice[1:2][0]))
 			if err != nil {
 				return err
 			}
 			(*m)["cycle_count"] = v
 		case "POWER_SUPPLY_ENERGY_NOW":
-			v, err := atoi(string(slice[1:2][0]))
+			v, err := atof(string(slice[1:2][0]))
 			if err != nil {
 				return err
 			}
 			(*m)["energy_now"] = v
 		case "POWER_SUPPLY_ENERGY_FULL":
-			v, err := atoi(string(slice[1:2][0]))
+			v, err := atof(string(slice[1:2][0]))
 			if err != nil {
 				return err
 			}
 			(*m)["energy_full"] = v
 		case "POWER_SUPPLY_ENERGY_FULL_DESIGN":
-			v, err := atoi(string(slice[1:2][0]))
+			v, err := atof(string(slice[1:2][0]))
 			if err != nil {
 				return err
 			}
@@ -143,7 +142,7 @@ func collectBattery(m *map[string]interface{}) error {
 	return nil
 }
 
-func collectCPUTemp(m *map[string]interface{}) error {
+func collectCPUTemp(m *map[string]float64) error {
 	var v float64
 	var err error
 
