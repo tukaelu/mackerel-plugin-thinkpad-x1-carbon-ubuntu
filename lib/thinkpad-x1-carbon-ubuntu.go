@@ -30,7 +30,7 @@ type ThinkpadX1CarbonPlugin struct {
 
 // GraphDefinition impl mackerel plugin interface
 func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
-	graphdef["battery.BAT0.capacity"] = mp.Graphs{
+	graphdef["battery.capacity"] = mp.Graphs{
 		Label: "Battery Capacity",
 		Unit:  "percentage",
 		Metrics: []mp.Metrics{
@@ -38,7 +38,7 @@ func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 	}
 
-	graphdef["battery.BAT0.energy"] = mp.Graphs{
+	graphdef["battery.energy"] = mp.Graphs{
 		Label: "Battery Energy",
 		Unit:  "integer",
 		Metrics: []mp.Metrics{
@@ -48,7 +48,7 @@ func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 	}
 
-	graphdef["battery.BAT0.cycle"] = mp.Graphs{
+	graphdef["battery.cycle"] = mp.Graphs{
 		Label: "Battery Cycle Count",
 		Unit:  "integer",
 		Metrics: []mp.Metrics{
@@ -86,6 +86,14 @@ func (p *ThinkpadX1CarbonPlugin) FetchMetrics() (map[string]interface{}, error) 
 	}
 
 	return m, nil
+}
+
+// MetricKeyPrefix impl mackerel plugin interface
+func (p *ThinkpadX1CarbonPlugin) MetricKeyPrefix() string {
+	if p.Prefix == "" {
+		p.Prefix = "thinkpad"
+	}
+	return p.Prefix
 }
 
 func collectBattery(m *map[string]interface{}) error {
@@ -203,7 +211,7 @@ func atof(s string) (float64, error) {
 
 // Do the plugin
 func Do() {
-	optPrefix := flag.String("metric-key-prefix", "", "Metric key prefix")
+	optPrefix := flag.String("metric-key-prefix", "thinkpad", "Metric key prefix")
 	flag.Parse()
 
 	p := mp.NewMackerelPlugin(&ThinkpadX1CarbonPlugin{
