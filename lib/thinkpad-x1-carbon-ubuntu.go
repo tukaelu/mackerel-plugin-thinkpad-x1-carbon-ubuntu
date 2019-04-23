@@ -102,42 +102,36 @@ func collectBattery(m *map[string]float64) error {
 	}
 	defer file.Close()
 
+	var key string
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
+		key = ""
+
 		slice := strings.Split(scanner.Text(), "=")
 
 		switch slice[0:1][0] {
 		case "POWER_SUPPLY_CAPACITY":
-			v, err := atof(string(slice[1:2][0]))
-			if err != nil {
-				return err
-			}
-			(*m)["capacity"] = v
+			key = "capacity"
 		case "POWER_SUPPLY_CYCLE_COUNT":
-			v, err := atof(string(slice[1:2][0]))
-			if err != nil {
-				return err
-			}
-			(*m)["cycle_count"] = v
+			key = "cycle_count"
 		case "POWER_SUPPLY_ENERGY_NOW":
-			v, err := atof(string(slice[1:2][0]))
-			if err != nil {
-				return err
-			}
-			(*m)["energy_now"] = v
+			key = "energy_now"
 		case "POWER_SUPPLY_ENERGY_FULL":
-			v, err := atof(string(slice[1:2][0]))
-			if err != nil {
-				return err
-			}
-			(*m)["energy_full"] = v
+			key = "energy_full"
 		case "POWER_SUPPLY_ENERGY_FULL_DESIGN":
-			v, err := atof(string(slice[1:2][0]))
-			if err != nil {
-				return err
-			}
-			(*m)["energy_design"] = v
+			key = "energy_design"
 		}
+
+		if key == "" {
+			continue
+		}
+
+		value, err := atof(string(slice[1:2][0]))
+		if err != nil {
+			return err
+		}
+		(*m)[key] = value
 	}
 	return nil
 }
