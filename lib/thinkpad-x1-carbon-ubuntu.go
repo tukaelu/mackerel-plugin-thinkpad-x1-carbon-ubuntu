@@ -57,7 +57,7 @@ func (p *ThinkpadX1CarbonPlugin) GraphDefinition() map[string]mp.Graphs {
 	}
 
 	graphdef["cpu.temp"] = mp.Graphs{
-		Label: "CPU temperature",
+		Label: "CPU Temperature",
 		Unit:  "float",
 		Metrics: []mp.Metrics{
 			{Name: "cpu", Label: "CPU", Diff: false, Stacked: false},
